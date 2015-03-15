@@ -597,25 +597,23 @@ function __onEnable ( __engine, __plugin, __script ) {
         //
         jsResult = __engine.eval( fnBody );
 
-        if ( typeof jsResult != 'undefined' ) { 
-          if ( jsResult == null) { 
-            // engine eval will return null even if the result should be undefined
-            echo(sender, 'null');
-          } else { 
-            try { 
-              if ( isJavaObject(jsResult) || typeof jsResult === 'function') {
-                echo(sender, jsResult);
-              } else { 
-                var replacer = function replacer(key, value){
-                  return this[key] instanceof java.lang.Object ? '' + this[key] : value;
-                };
-                echo(sender, JSON.stringify( jsResult, replacer, 2) );
-              }
-            } catch ( displayError ) { 
-	      logError('Error while trying to display result: ' + jsResult + ', Error: '+ displayError) ;
+        if ( jsResult == null) {
+          // engine eval will return null even if the result should be undefined
+          echo(sender, 'null');
+        } else {
+          try {
+            if ( isJavaObject(jsResult) || typeof jsResult === 'function') {
+              echo(sender, jsResult);
+            } else {
+              var replacer = function replacer(key, value){
+                return this[key] instanceof java.lang.Object ? '' + this[key] : value;
+              };
+              echo(sender, JSON.stringify( jsResult, replacer, 2) );
             }
+          } catch ( displayError ) {
+            logError('Error while trying to display result: ' + jsResult + ', Error: '+ displayError) ;
           }
-        } 
+        }
       } catch ( e ) {
         logError( 'Error while trying to evaluate javascript: ' + fnBody + ', Error: '+ e );
         echo( sender, 'Error while trying to evaluate javascript: ' + fnBody + ', Error: '+ e );
