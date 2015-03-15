@@ -600,8 +600,7 @@ function __onEnable ( __engine, __plugin, __script ) {
         if ( typeof jsResult != 'undefined' ) { 
           if ( jsResult == null) { 
             // engine eval will return null even if the result should be undefined
-            // this can be confusing so I think it's better to omit output for this case
-            // sender.sendMessage('(null)');
+            echo(sender, 'null');
           } else { 
             try { 
               if ( isJavaObject(jsResult) || typeof jsResult === 'function') {
